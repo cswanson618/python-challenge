@@ -12,5 +12,5 @@ with open('election_data.csv') as e:
 
     print("Election Results")
     print("------")
-    print(rows+1)
+    print("Total Votes: " + str(rows+1))
     print
