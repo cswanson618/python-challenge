@@ -1,18 +1,16 @@
 import csv
 import os
 
+print("------")
+print("Please wait while votes are tabulated. This may take a minute or two.")
+print("------")
+
 path = os.path.join("pypoll", "main.py")
 
 with open("election_data.csv") as e:
     for row in e:
         rows = sum(1 for row in e)
 
-        print("Election Results")
-        print("------")
-        print("Total Votes: " + str(rows+1))
-        print("------")
-        print("Please wait while votes per candidate are tabulated. This may take a minute or two.")
-        print("------")
 
 with open("election_data.csv") as f:
     cdte = csv.DictReader(f)
@@ -25,6 +23,11 @@ with open("election_data.csv") as f:
                 ot= (can_list.count("O'Tooley"))
                 li= (can_list.count("Li"))
 
+print("Election Results")
+print("------")
+print("Total Votes: " + str(rows+1))
+print("------")
+print("Votes by candidate:")
 print ("Khan recieved " + str(k) + " votes, which is " + str(round((k/(rows+1)*100),2))+ "% of the total vote")
 print ("Correy recieved " + str(cor) + " votes, which is " + str(round((cor/(rows+1)*100),2))+ "% of the total vote")
 print ("O'Tooley recieved " + str(ot) + " votes, which is " + str(round((ot/(rows+1)*100),2))+ "% of the total vote")
