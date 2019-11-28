@@ -25,7 +25,7 @@ with open("election_data.csv") as f:
 
 print("Election Results")
 print("------")
-print("Total Votes: " + str(rows+1))
+print("Total Votes: " + str(rows))
 print("------")
 print("Votes by candidate:")
 print("")
@@ -33,3 +33,29 @@ print ("Khan recieved " + str(k) + " votes, which is " + str(round((k/(rows+1)*1
 print ("Correy recieved " + str(cor) + " votes, which is " + str(round((cor/(rows+1)*100),2))+ "% of the total vote")
 print ("O'Tooley recieved " + str(ot) + " votes, which is " + str(round((ot/(rows+1)*100),2))+ "% of the total vote")
 print ("Li recieved " + str(li) + " votes, which is " + str(round((li/(rows+1)*100),2))+ "% of the total vote")
+print("------")
+print("Winner is:")
+if (k == cor):
+    print ("Tie between Khan and Correy")
+elif (k == ot):
+    print ("Tie between Khan and O'Tooley")
+elif (k == li):
+    print ("Tie between Khan and Li")
+elif (cor == ot):
+    print ("Tie between Correy and O'Tooley")
+elif (cor == li):
+    print ("Tie between Correy and Li")
+elif (ot == li):
+    print ("Tie between O'Tooley and Li")
+elif (k > cor) and (k > ot) and (k > li):
+    print("Khan")
+elif (cor > k) and (cor > ot) and (cor > li):
+    print("Correy")
+elif (ot > k) and (ot > cor) and (ot > li):
+    print("O'Tooley")
+elif (li > k) and (li > cor) and (li > ot):
+    print("Li")
+else:
+    print("ERROR. Please notify Christopher Swanson.")
+print ("------")
+print ("End of tabulation")
