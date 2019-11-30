@@ -2,7 +2,7 @@ import csv
 import os
 
 print("------")
-print("Please wait while votes are tabulated. This may take a minute or two.")
+print("Please wait while votes are tabulated. This may take a moment or two.")
 print("------")
 
 path = os.path.join("pypoll", "main.py")
@@ -11,6 +11,8 @@ with open("election_data.csv") as e:
     for row in e:
         rows = sum(1 for row in e)
 
+print ("There were " + str(rows) + " total votes cast.")
+print("------")
 
 with open("election_data.csv") as f:
     cdte = csv.DictReader(f)
@@ -26,11 +28,8 @@ unique_candidateslist = list(unique_candidateset)
 
 index_count = 0
 for index_count in range (0, (len(unique_candidateslist))):
-    print(can_list.count(unique_candidateslist[index_count]))
+    print(str(unique_candidateslist[index_count])+ ": " + str((can_list.count(unique_candidateslist[index_count])))+ " votes, which is " + str((round(((can_list.count(unique_candidateslist[index_count])/rows)*100), 2))) + "% of the total vote.")
     index_count += 1
-
-    
-print ("All candidates who recieved votes: " + str(unique_candidateslist))
 print("------")         
 
 # print("Election Results")
