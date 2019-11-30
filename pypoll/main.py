@@ -21,10 +21,17 @@ with open("election_data.csv") as f:
                 first_list.append(v)
 
 can_list = first_list [2::3]
-unique_candidates = set(can_list)
-print (unique_candidates)
+unique_candidateset = set(can_list)
+unique_candidateslist = list(unique_candidateset)
 
-            
+index_count = 0
+for index_count in range (0, (len(unique_candidateslist))):
+    print(can_list.count(unique_candidateslist[index_count]))
+    index_count += 1
+
+    
+print ("All candidates who recieved votes: " + str(unique_candidateslist))
+print("------")         
 
 # print("Election Results")
 # print("------")
