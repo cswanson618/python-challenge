@@ -1,5 +1,6 @@
 import csv
 import os
+from statistics import mode #Found from a StackOverflow search on finding the mode of a list. Also affects line 52.
 
 print("------")
 print("Please wait while votes are tabulated. This may take a moment or two.")
@@ -10,6 +11,9 @@ path = os.path.join("pypoll", "main.py")
 with open("election_data.csv") as e:
     for row in e:
         rows = sum(1 for row in e)
+
+#Lines 11-13 merely calculate the number of total votes there are by summing the number 
+#of rows in the CSV file in a for loop
 
 print ("There were " + str(rows) + " total votes cast.")
 print("------")
@@ -22,49 +26,40 @@ with open("election_data.csv") as f:
         for k, v in row.items():
                 first_list.append(v)
 
+#It seemed most logical to me to now reopen the CSV as a dictionary so that I could parse keys and values
+#and place values in a list. I do this by creating a new list by where the for loop appends dictionary
+#values to a new list. I found line 26 in Python Dictionaries documentation. I also discovered (after much toil) that dictionaries
+#imported by the DictReader method produce a new dictionary for every row, hence the loop in a loop. The first
+#loop loops the rows, the second loops the keys and values in each row.
+
 can_list = first_list [2::3]
 unique_candidateset = set(can_list)
 unique_candidateslist = list(unique_candidateset)
+
+#Line 35 is responsible for getting rid of the Voter ID and County Data by focusing on the index point
+#in the first_list where the candidate data is, then returning every third item (note: each row was Voter ID,
+# County ID, Candidate. Thus, we start at the Candidate index point and keep going to every third index point
+# in the list). This creates a list of just the candidate names from the original CSV. 
+# I then use the set function in python to get a list of the unique Candidate values, and convert that 
+# set back to a list. Thus can_list is a list of just the candidate names from the CSV while
+#unique_candidateslist is a list that has just the unique names of the candidates who recieved votes
 
 index_count = 0
 for index_count in range (0, (len(unique_candidateslist))):
     print(str(unique_candidateslist[index_count])+ ": " + str((can_list.count(unique_candidateslist[index_count])))+ " votes, which is " + str((round(((can_list.count(unique_candidateslist[index_count])/rows)*100), 2))) + "% of the total vote.")
     index_count += 1
-print("------")         
+print("------")
+print(str(mode(can_list)) + " is the winner of the election.") #See comment at line 3.
 
-# print("Election Results")
-# print("------")
-# print("Total Votes: " + str(rows))
-# print("------")
-# print("Votes by candidate:")
-# print("")
-# print ("Khan recieved " + str(k) + " votes, which is " + str(round((k/(rows+1)*100),2))+ "% of the total vote")
-# print ("Correy recieved " + str(cor) + " votes, which is " + str(round((cor/(rows+1)*100),2))+ "% of the total vote")
-# print ("O'Tooley recieved " + str(ot) + " votes, which is " + str(round((ot/(rows+1)*100),2))+ "% of the total vote")
-# print ("Li recieved " + str(li) + " votes, which is " + str(round((li/(rows+1)*100),2))+ "% of the total vote")
-# print("------")
-# print("Winner is:")
-# if (k == cor):
-#     print ("Tie between Khan and Correy")
-# elif (k == ot):
-#     print ("Tie between Khan and O'Tooley")
-# elif (k == li):
-#     print ("Tie between Khan and Li")
-# elif (cor == ot):
-#     print ("Tie between Correy and O'Tooley")
-# elif (cor == li):
-#     print ("Tie between Correy and Li")
-# elif (ot == li):
-#     print ("Tie between O'Tooley and Li")
-# elif (k > cor) and (k > ot) and (k > li):
-#     print("Khan")
-# elif (cor > k) and (cor > ot) and (cor > li):
-#     print("Correy")
-# elif (ot > k) and (ot > cor) and (ot > li):
-#     print("O'Tooley")
-# elif (li > k) and (li > cor) and (li > ot):
-#     print("Li")
-# else:
-#     print("ERROR. Please notify Christopher Swanson.")
-# print ("------")
-# print ("End of tabulation")
+#Finally, my code creates a for loop by where the loop uses the list count function to check the unique names
+#in the unique_candidateslist against how many times they appear in the list that shows how many times
+#each candidate's name appears (can_list). The loop iterates through the index points in the unique candidates
+#list to do this. Using the range function and making the end of the range the list length of the 
+#unique candidates list keeps me from going out of bounds. The rest of the code is just the mathematical 
+#operations to get percentages of the total vote for each candidate. The winner tabulation is derived from 
+#the mode of can_list.
+# 
+# This code is entirely independent of any specific candidate name or total number of votes;
+#everything is calculated inside the code. That is why the division to get the percentages refers to the 
+#calculation of the total number of votes cast as coded in lines 11-13 and the list.count method uses the lists
+#derived from the dictionaries created from the original CSV.
