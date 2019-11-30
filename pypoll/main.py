@@ -1,24 +1,25 @@
 import csv
 import os
 from statistics import mode #Found from a StackOverflow search on finding the mode of a list. Also affects line 52.
+import sys #Using to execute a method to print terminal output to text (see lines 72-83). Found using research on StackOverflow.
 
 print("------")
 print("Please wait while votes are tabulated. This may take a moment or two.")
 print("------")
 
-path = os.path.join("pypoll", "main.py")
+path = os.path.join("..","pypoll", "election_data.csv")
 
-with open("election_data.csv") as e:
+with open(path) as e:
     for row in e:
         rows = sum(1 for row in e)
 
-#Lines 11-13 merely calculate the number of total votes there are by summing the number 
+#Lines 12-14 merely calculate the number of total votes there are by summing the number 
 #of rows in the CSV file in a for loop
 
 print ("There were " + str(rows) + " total votes cast.")
 print("------")
 
-with open("election_data.csv") as f:
+with open(path) as f:
     cdte = csv.DictReader(f)
     first_list = []
     can_list = []
@@ -36,7 +37,7 @@ can_list = first_list [2::3]
 unique_candidateset = set(can_list)
 unique_candidateslist = list(unique_candidateset)
 
-#Line 35 is responsible for getting rid of the Voter ID and County Data by focusing on the index point
+#Line 36 is responsible for getting rid of the Voter ID and County Data by focusing on the index point
 #in the first_list where the candidate data is, then returning every third item (note: each row was Voter ID,
 # County ID, Candidate. Thus, we start at the Candidate index point and keep going to every third index point
 # in the list). This creates a list of just the candidate names from the original CSV. 
@@ -46,10 +47,14 @@ unique_candidateslist = list(unique_candidateset)
 
 index_count = 0
 for index_count in range (0, (len(unique_candidateslist))):
-    print(str(unique_candidateslist[index_count])+ ": " + str((can_list.count(unique_candidateslist[index_count])))+ " votes, which is " + str((round(((can_list.count(unique_candidateslist[index_count])/rows)*100), 2))) + "% of the total vote.")
+    print(str(unique_candidateslist[index_count])+ ": " \
+    + str((can_list.count(unique_candidateslist[index_count]))) + \
+    " votes, which is " + str((round(((can_list.count(unique_candidateslist[index_count])/rows)*100), 2))) \
+    + "% of the total vote.")
     index_count += 1
 print("------")
 print(str(mode(can_list)) + " is the winner of the election.") #See comment at line 3.
+
 
 #Finally, my code creates a for loop by where the loop uses the list count function to check the unique names
 #in the unique_candidateslist against how many times they appear in the list that shows how many times
@@ -61,5 +66,25 @@ print(str(mode(can_list)) + " is the winner of the election.") #See comment at l
 # 
 # This code is entirely independent of any specific candidate name or total number of votes;
 #everything is calculated inside the code. That is why the division to get the percentages refers to the 
-#calculation of the total number of votes cast as coded in lines 11-13 and the list.count method uses the lists
+#calculation of the total number of votes cast as coded in lines 12-14 and the list.count method uses the lists
 #derived from the dictionaries created from the original CSV.
+
+savepath= os.path.join("..", "pypoll", "election_tabulation.txt")
+f= open (savepath, "w+")
+sys.stdout =f
+print("Election Results")
+print("------")
+print ("There were " + str(rows) + " total votes cast.")
+print("------")
+index_count = 0
+for index_count in range (0, (len(unique_candidateslist))):
+    print(str(unique_candidateslist[index_count])+ ": " \
+    + str((can_list.count(unique_candidateslist[index_count]))) + \
+    " votes, which is " + str((round(((can_list.count(unique_candidateslist[index_count])/rows)*100), 2))) \
+    + "% of the total vote.")
+    index_count += 1
+print("------")
+print(str(mode(can_list)) + " is the winner of the election.")
+f.close()
+#The above lines repeat the code that outputs the election results to the terminal so it will now print to a text file.
+#As described at line 4, I found this method using a search on Stack Overflow.
